@@ -88,7 +88,7 @@ while (comprarOtroProducto==1) {
         break;
     }
 
-    totalClienteAPagar= parseFloat(preciolista * (1-descuentoAaplicar))
+    totalClienteAPagar= parseInt(preciolista * (1-descuentoAaplicar))
 
 
     alert("Solamente pagarás "+ " " + "UYU "+ totalClienteAPagar+ " por tu "+descripcionProductoAPagar+" 😎😎😎😎");

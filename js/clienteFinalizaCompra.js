@@ -1,85 +1,74 @@
 
 let productosApagar;
-let descripcionProductoAPagar;
+let descripcionProductoAPagar=[
+    "Smartphone",
+    "Vestido de verano",
+    "Reloj de pared",
+    "Reloj de mano para hombre"
+]
 let primeraCompraCliente=0;
 let descuentoAaplicar=0;
 let preciolista;
 let mensajeDespedidaalert;
+let productosDisp=[
+    "1-Smartphone, UYU 1.090 c/u",
+    "2-Vestido de verano, UYU 990 c/u",
+    "3-Reloj de pared, UYU 490 c/u",
+    "4-Reloj de mano para hombre, UYU 690 c/u"
+    ];
+let productosDispString=productosDisp.join("\n")
+let precios=[
+    1090,
+    990,
+    490,
+    690,
+]
 
+let nombre= prompt("Cual es tu nombre o como te dicen?🧐🧐🧐")
 
 primeraCompraCliente = +prompt(
-    "Ya casi finalizas tu compra y tenemos un regalo para ti 🤗🤩... "+ "\n" + "\n" 
-    +"Ingresa: 1, Si es la PRIMERA vez que compras"+ "\n"
-    +"Ingresa: 2, Si ya COMPRASTE ANTES "+ "\n" 
+    "Antes de finalizar tu compra, tenemos un oferta para ti 🤗🤩... "+ "\n" + "\n" 
+    +"ingresa: 1, Si es la PRIMERA vez que compras"+ "\n"
+    +"ingresa: 2, Si ya COMPRASTE ANTES "+ "\n" 
 
 )
 
 while (primeraCompraCliente !==1 && primeraCompraCliente  !== 2 ){
     primeraCompraCliente=+prompt("⚠️ Solo debes ingresar el número de la opción:"+ "\n"+ "\n"
-    +"Ingresa: 1, Si es la PRIMERA vez que compras"+ "\n"
-    +"Ingresa: 2, Si ya COMPRASTE ANTES "+ "\n" )
+    +"ingresa: 1, Si es la PRIMERA vez que compras"+ "\n"
+    +"ingresa: 2, Si ya COMPRASTE ANTES "+ "\n" )
 
 }   
 
 if (primeraCompraCliente===1)
 {
         alert("Gracias por elegirnos!!"+ "\n" + "\n" 
-            +"Te damos la bienvenida a Satu tienda  😎💪"+ "\n"+ "\n"
-            +"Nos pone contento tener clientes nuevos, por eso te damos un descuento del 12.3 % en esta compra🎉🎉🎉🎈🎈"          
+            +"te damos la bienvenida a Satu tienda  😎💪"+ "\n"+ "\n"
+            +"nos pone contento tener clientes nuevos, por eso te damos un descuento del 12.3 % en esta compra🎉🎉🎉🎈🎈"          
         );
 }
     else
 {
         alert("Que bueno verte de nuevo!!"+ "\n" + "\n" 
-            +"Gracias por seguir confiando en nosotros 🥰☺️"+ "\n"+ "\n"
-            +"Aqui tu tienes tu descuento de 6.5 % 🎉🎉🎉🎈🎈 "          
+            +"gracias por seguir confiando en nosotros 🥰☺️"+ "\n"+ "\n"
+            +"aqui tu tienes tu descuento de 6.5 % 🎉🎉🎉🎈🎈 APROVECHALOO!!! "          
         );
 
 
 }
 
-
 let comprarOtroProducto=1
 
 while (comprarOtroProducto==1) {
-    productosApagar = +prompt(
-        "Selecciona los productos a pagar digitando el número correspondiente"+ "\n" + "\n" 
-        +"1-Smartphone UYU 1.090 cada uno"+ "\n"
-        +"2-Vestido de verano UYU 990 cada uno" + "\n" 
-        +"3-Reloj de pared UYU 490 cada uno"+ "\n"
-    )
-    
-    while (productosApagar !==1 && productosApagar  !== 2 && productosApagar  !== 3){
-        productosApagar=+prompt("⚠️ Solo debes ingresar el Codigo:"+ "\n"+ "\n"
-        +"1-Smartphone UYU 1.090 cada uno"+ "\n"
-        +"2-Vestido de verano UYU 990 cada uno" + "\n" 
-        +"3-Reloj de pared UYU 490 cada uno"+ "\n" )
+    let opcionesProductos = `${nombre}, cual de estos productos te gusta? ☺️☺️ .. ingresa el codigo: \n \n ${productosDispString}`;
+    let productosApagar = +prompt(opcionesProductos);
+    let indiceProducSelec = productosApagar-1;
 
+    while (productosApagar > productosDisp.length | productosApagar < 1) {
+
+        productosApagar= +prompt (`⚠️⚠️ ${nombre}  solo debes ingresar el codigo:  \n \n  ${productosDispString}`)
     }   
 
-
-    switch(productosApagar){
-        case 1: preciolista=1090; 
-        break;
-        case 2: preciolista=990; 
-        break;
-        case 3: preciolista=490; 
-        break;
-        default : alert("No seleccionaste un producto a pagar");
-        break;
-    }
-
-    switch(productosApagar){
-        case 1: descripcionProductoAPagar="Smartphone"; 
-        break;
-        case 2: descripcionProductoAPagar="Vestido de verano"; 
-        break;
-        case 3: descripcionProductoAPagar="Reloj de pared"; 
-        break;
-        default : alert("No seleccionaste un producto a pagar");
-        break;
-    }
-    
     switch(primeraCompraCliente){
         case 1: descuentoAaplicar = 0.12; 
         break;
@@ -88,10 +77,9 @@ while (comprarOtroProducto==1) {
         break;
     }
 
-    totalClienteAPagar= parseInt(preciolista * (1-descuentoAaplicar))
+    totalClienteAPagar= parseInt(precios[indiceProducSelec] * (1-descuentoAaplicar))
 
-
-    alert("Solamente pagarás "+ " " + "UYU "+ totalClienteAPagar+ " por tu "+descripcionProductoAPagar+" 😎😎😎😎");
+    alert(` ${nombre}!!\n \n solamente pagarás UYU ${totalClienteAPagar} por tu: \n ${descripcionProductoAPagar[indiceProducSelec]} 😎😎😎😎`);
 
     comprarOtroProducto = +prompt(
         "Aprovecha el descuento y comprate otro producto!! "+ "\n" + "\n" 
@@ -103,11 +91,9 @@ while (comprarOtroProducto==1) {
         comprarOtroProducto=+prompt(" ⚠️ Solo puedes ingresar las opciones (1) o (2)")
 
     }
-
-
 };
 
-mensajeDespedidaalert = alert("Gracias por tu compra 🤩🤗💪, te esperamos nuevamente !");
+mensajeDespedidaalert = alert(`${nombre }, gracias por tu compra 🤩🤗💪,\n te esperamos nuevamente!!`);
 
 
 

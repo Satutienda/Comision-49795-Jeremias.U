@@ -62,12 +62,15 @@ let comprarOtroProducto=1
 while (comprarOtroProducto==1) {
     let opcionesProductos = `${nombre}, cual de estos productos te gusta? ☺️☺️ .. ingresa el codigo: \n \n ${productosDispString}`;
     let productosApagar = +prompt(opcionesProductos);
+    
+
+ 
+ while (productosApagar > productosDisp.length | productosApagar < 1) {
+
+        productosApagar= +prompt (`⚠️⚠️ ${nombre}  solo debes ingresar el codigo:  \n \n  ${productosDispString}`);  
+    }  
+
     let indiceProducSelec = productosApagar-1;
-
-    while (productosApagar > productosDisp.length | productosApagar < 1) {
-
-        productosApagar= +prompt (`⚠️⚠️ ${nombre}  solo debes ingresar el codigo:  \n \n  ${productosDispString}`)
-    }   
 
     switch(primeraCompraCliente){
         case 1: descuentoAaplicar = 0.12; 

@@ -24,7 +24,7 @@ constructor(prod) {
     this.nombreProd = prod.nombreProd.toUpperCase();
     this.precioUYU = parseFloat(prod.precioUYU);
     this.Imp = parseFloat(prod.precioUYU  * IVA);
-    this.precioImp = parseFloat(prod.precioUYU  * (1-Dto));
+    this.precioImp = parseFloat(prod.precioUYU  * (1-IVA));
 }
 
 }
@@ -48,69 +48,73 @@ for (const producto of listaProdAlmacenada) {
 /*============================Trabajo Sobre la Tabla======================================================*/
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Obtener el formulario y agregar un evento de escucha para el envío
-    const formularioAgregarProducto = document.getElementById('formularioAgregarProducto');
+    const formularioAgregarProducto = document.getElementById('formularioProducto');
+
     formularioAgregarProducto.addEventListener('submit', function(event) {
         event.preventDefault();
+        const nombreNuevoProducto = document.getElementById('nombreProducto').value;
+        const precioNuevoProducto = parseFloat(document.getElementById('precioProducto').value);
 
-        // Obtener valores del formulario
-        const nombreNuevoProducto = document.getElementById('nombreNuevoProducto').value;
-        const precioNuevoProducto = parseFloat(document.getElementById('precioNuevoProducto').value);
+        if (!isNaN(precioNuevoProducto)) {
+            const nuevoProducto = {
+                id: listaProdAlmacenada.length + 1,
+                nombreProd: nombreNuevoProducto,
+                precioUYU: precioNuevoProducto
+            };
 
-        // Crear un nuevo objeto del producto
-        const nuevoProducto = {
-            id: listaProdAlmacenada.length + 1, // Nuevo ID basado en la longitud actual de la lista
-            nombreProd: nombreNuevoProducto,
-            precioUYU: precioNuevoProducto
-        };
-
-        // Agregar el nuevo producto a la lista
         listaProdAlmacenada.push(nuevoProducto);
 
-        // Almacenar la lista actualizada en localStorage
         guardarLocal('listaArtLocal', JSON.stringify(listaProdAlmacenada));
-
-        // Actualizar la tabla en la página
+        console.log(JSON.parse(localStorage.getItem('listaArtLocal')));
         actualizarTabla();
-
-        // Limpiar el formulario
         formularioAgregarProducto.reset();
+    }else {
+        console.error("el precio no es un numero valido.");
+    }
     });
 
-    // Función para actualizar la tabla con los productos actuales
-    function actualizarTabla() {
-        // Obtener la lista actualizada de productos desde localStorage
-        const listaProdAlmacenada = JSON.parse(localStorage.getItem('listaArtLocal')) || [];
-
-        // Crear una nueva lista de productos usando la clase Producto
-        const listaProductos = listaProdAlmacenada.map((obj) => new Producto(obj));
-
-        // Obtener la tabla y su cuerpo
-        const tablaProductosElement = document.getElementById('tablaProductos');
-        const cuerpo = document.createElement('tbody');
-
-        // Agregar filas con los productos
-        for (const producto of listaProductos) {
-            const fila = document.createElement('tr');
-            fila.innerHTML = `
-                <td>${producto.id}</td>
-                <td>${producto.nombreProd}</td>
-                <td>${producto.precioUYU.toFixed(2)}</td>
-                <td>${producto.Imp.toFixed(2)}</td>
-                <td>${producto.precioImp.toFixed(2)}</td>
-            `;
-            cuerpo.appendChild(fila);
-        }
-
-        // Limpiar la tabla y agregar el cuerpo actualizado
-        tablaProductosElement.innerHTML = '';
-        tablaProductosElement.appendChild(cuerpo);
-    }
-
-    // Llamar a la función para inicializar la tabla al cargar la página
     actualizarTabla();
-});
 
+
+
+function actualizarTabla() {
+    const listaProdAlmacenada = JSON.parse(localStorage.getItem('listaArtLocal')) || [];
+    console.log(listaProdAlmacenada);
+
+    const listaProductos = listaProdAlmacenada.map((obj) => new Producto(obj));
+    const tablaProductosElement = document.getElementById('tablaProductos');
+    const tablaBootstrap = document.createElement('table');
+        tablaBootstrap.classList.add('table');
+        const cabecera = document.createElement('thead');
+    cabecera.innerHTML = `
+            <tr>
+                <th>ID</th>
+                <th>Nombre del Producto</th>
+                <th>Precio S/Imp</th>
+                <th>IVA 22% </th>
+                <th>Precio C/Imp </th>
+            </tr>
+        `;
+        tablaBootstrap.appendChild(cabecera);
+        
+        const cuerpo = document.createElement('tbody');
+    for (const producto of listaProductos) {
+        const fila = document.createElement('tr');
+        fila.innerHTML = `
+            <td>${producto.id}</td>
+            <td>${producto.nombreProd}</td>
+            <td>${producto.precioUYU.toFixed(2)}</td>
+            <td>${producto.Imp.toFixed(2)}</td>
+            <td>${producto.precioImp.toFixed(2)}</td>
+        `;
+        cuerpo.appendChild(fila);
+    }
+    tablaBootstrap.appendChild(cuerpo);
+    tablaProductosElement.innerHTML = '';
+    tablaProductosElement.appendChild(tablaBootstrap);
+}
+actualizarTabla();
+});
 
 
 

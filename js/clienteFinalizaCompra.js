@@ -24,7 +24,7 @@ constructor(prod) {
     this.nombreProd = prod.nombreProd.toUpperCase();
     this.precioUYU = parseFloat(prod.precioUYU);
     this.Imp = parseFloat(prod.precioUYU  * IVA);
-    this.precioImp = parseFloat(prod.precioUYU  * (1-IVA));
+    this.precioImp = parseFloat(prod.precioUYU  * (1+IVA));
 }
 
 }

@@ -1,4 +1,37 @@
+async function fetchData() {
+    const url = 'https://weatherapi-com.p.rapidapi.com/current.json?q=-34.9011,-56.1915';
+    const apiKey = '2551ee8410mshfa262de6b09cd9dp192857jsnf7469f51ad86';
 
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'X-RapidAPI-Key': apiKey,
+                'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com',
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        displayData(data);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+function displayData(data) {
+    const regionElement = document.getElementById('region');
+    const countryElement = document.getElementById('country');
+    const tempCElement = document.getElementById('tempC');
+
+    regionElement.textContent = data.location.region;
+    countryElement.textContent = data.location.country;
+    tempCElement.textContent = `${data.current.temp_c}°C`;
+}
+fetchData();
 
 async function ListaProductosExiste() {
     const response = await fetch("https://satutienda.github.io/Comision-49795-Jeremias.U/productos.json");
@@ -123,32 +156,136 @@ function mostrarTabla() {
     }
     function mostrarSweetAlert() {
         Swal.fire({
-            title: '¿Es tu primera compra aqui? 🧐🧐🧐',
-            input: 'select',
-            inputOptions: {
-                "si" : 'Sí',
-                "no" : 'No'
-            },
-            inputPlaceholder: 'Cuentanos!!',
+            title: '¿Es tu primera compra aqui? \n 🧐🧐🧐',
+
             showCancelButton: true,
-            confirmButtonText: 'Confirmar',
-            cancelButtonText: 'Cancelar'
+            buttonsStyling: false,
+            confirmButtonText: 'Soy nuevo',
+            cancelButtonText: 'Ya soy cliente',
+            background: " url()",
+            color: "#fafafc",
+            customClass: {
+                confirmButton: 'btn btn-success mr-2',
+                cancelButton: 'btn btn-info mr-2'
+            },
+            allowOutsideClick: false
         }).then((result) => {
+            console.log(result)
             if (result.isConfirmed) {
-                Swal.fire('¡Gracias por volver!', '¡Finalizaste tu compra!', 'success');
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                Swal.fire('Ok revisa y vuelve', '', 'error');
+                Swal.fire({
+                    title: `Bienvenido!!! 💪🎈🎉 para recibirte, te preparamos este gran descuento!! \n 
+                       ahora pagaras: ${totalGeneral * 0.6} UYU `,
+                    showCancelButton: true,
+                    confirmButtonText: 'Ok, hagamoslo !!',
+                    cancelButtonText: 'cancelar',
+                    width: '70%',
+                    padding: "3em",
+                    color: "#fafafc",
+                    background: " url()",
+                    backdrop: `
+                        rgba(0,0,123,0.5) 
+                        url("https://media0.giphy.com/media/hy2Jy1wFR3j3xqigyO/giphy.gif")
+                        center top 
+                        no-repeat
+                    `
+                }).then((prepago) => {
+                    console.log(prepago)
+                    if (prepago.isConfirmed) {
+                        Swal.fire({
+                            title: `Confirmar el pago de: ${totalGeneral * 0.6} UYU `,
+                            showCancelButton: true,
+                            confirmButtonText: 'Confirmar',
+                            cancelButtonText: 'Cancelar',
+                            width: '70%',
+                            padding: "3em",
+                            color: "#fafafc",
+                            background: " url()",
+
+                        }).then((pagofinal) => {
+                            console.log(pagofinal)
+                            if (pagofinal.isConfirmed) {
+
+                                localStorage.removeItem('productosSeleccionados');
+                                mostrarTabla();
+                                Swal.fire({
+                                    title: `Gracias por tu compra !! te esperamos nuevamente`,
+
+                                    confirmButtonText: 'Gracias',
+                                    width: '70%',
+                                    padding: "3em",
+                                    color: "#fafafc",
+                                    background: " url()",
+
+                                })
+
+
+                            }
+                        }
+                        )
+                    }
+                })
+            } else {
+                Swal.fire({
+                    title: `Nos encanta que regreses ❤️🥰, este es un descuento para ti \n 
+                    ahora pagaras: ${totalGeneral * 0.8} UYU `,
+                    showCancelButton: true,
+                    confirmButtonText: 'Ok, hagamoslo !!',
+                    cancelButtonText: 'cancelar',
+                    width: '70%',
+                    padding: "3em",
+                    color: "#fafafc",
+                    background: " url()",
+                    backdrop: `
+                        rgba(0,0,123,0.5) 
+                        url("https://media2.giphy.com/media/qofcu0xRAuNmJohZdk/giphy.gif")
+                        center top 
+                        no-repeat
+                    `
+                }).then((prepago) => {
+                    console.log(prepago)
+                    if (prepago.isConfirmed) {
+                        Swal.fire({
+                            title: `Confirmar el pago de: ${totalGeneral * 0.8} UYU `,
+                            showCancelButton: true,
+                            confirmButtonText: 'Confirmar',
+                            cancelButtonText: 'Cancelar',
+                            width: '70%',
+                            padding: "3em",
+                            color: "#fafafc",
+                            background: " url()",
+
+                        }).then((pagofinal) => {
+                            console.log(pagofinal)
+                            if (pagofinal.isConfirmed) {
+
+                                localStorage.removeItem('productosSeleccionados');
+                                mostrarTabla();
+                                Swal.fire({
+                                    title: `Gracias por tu compra !! te esperamos nuevamente`,
+
+                                    confirmButtonText: 'Gracias',
+                                    width: '70%',
+                                    padding: "3em",
+                                    color: "#fafafc",
+                                    background: " url()",
+
+                                })
+
+
+                            }
+                        }
+                        )
+                    }
+                })
+
             }
         });
     }
 }
 
-
-
 document.getElementById("guardarEnLocalStorage").addEventListener("click", async function () {
     guardarProductoEnLocalStorage();
 });
-
 
 document.getElementById("miFormulario").addEventListener("submit", function (event) {
     event.preventDefault();
@@ -188,7 +325,6 @@ async function guardarProductoEnLocalStorage() {
     }
 }
 
-
 ListaProductosExiste().then(productos => {
     const selectProductos = document.getElementById("productosDisp");
 
@@ -199,7 +335,6 @@ ListaProductosExiste().then(productos => {
         selectProductos.appendChild(option);
     });
 });
-
 
 mostrarTabla();
 

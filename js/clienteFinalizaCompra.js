@@ -26,10 +26,8 @@ function mostrarTabla() {
 
     productosGuardados.forEach((producto, index) => {
         const fila = document.createElement("tr");
-
         const productoObj = JSON.parse(producto);
 
-        // Celda para la imagen principal
         const imagenCel = document.createElement("td");
         const imagen = document.createElement("img");
         imagen.src = productoObj.ImagPpal || '';
@@ -41,17 +39,14 @@ function mostrarTabla() {
         imagenCel.appendChild(imagen);
         fila.appendChild(imagenCel);
 
-        // Celda para el nombre
         const nombreCel = document.createElement("td");
         nombreCel.textContent = productoObj.nombreSatu;
         fila.appendChild(nombreCel);
 
-        // Celda para el precio
         const precioCel = document.createElement("td");
         precioCel.textContent = productoObj.precioLista || '';
         fila.appendChild(precioCel);
 
-        // Celda para la cantidad
         const cantidadCel = document.createElement("td");
         cantidadCel.textContent = productoObj.cantidad || '';
         fila.appendChild(cantidadCel);
@@ -61,19 +56,17 @@ function mostrarTabla() {
         totalCel.textContent = total || '';
         fila.appendChild(totalCel);
 
-        // Celda para el botón de eliminación
         const eliminarCel = document.createElement("td");
         const eliminarBoton = document.createElement("button");
-        eliminarBoton.className = "btn btn-danger btn-sm"; 
+        eliminarBoton.className = "btn btn-danger btn-sm";
         eliminarBoton.textContent = "Eliminar";
         eliminarCel.appendChild(eliminarBoton);
         fila.appendChild(eliminarCel);
 
-        eliminarBoton.addEventListener("click", function () {  
+        eliminarBoton.addEventListener("click", function () {
             eliminarFilaYLocalStorage(index);
         });
 
-        // Sumar al total general
         if (total) {
             totalGeneral += parseFloat(total);
         }
@@ -81,22 +74,44 @@ function mostrarTabla() {
         tablaProductos.appendChild(fila);
     });
 
-    // Agregar fila al final con el total general
+
+
+
+
+
+    // Resumen con total general 
     const filaTotal = document.createElement("tr");
     const totalGeneralCel = document.createElement("td");
-    totalGeneralCel.colSpan = 4;
+    totalGeneralCel.colSpan = 5;
     totalGeneralCel.style.textAlign = 'right';
     totalGeneralCel.textContent = 'Total General: ' + totalGeneral.toFixed(2);
     filaTotal.appendChild(totalGeneralCel);
-
     tablaProductos.appendChild(filaTotal);
 
+    // Creo el boton filanizar compra
+    const finalizarCompraCel = document.createElement("td");
+    const finalizarCompraBoton = document.createElement("button");
+    finalizarCompraBoton.className = "btn btn-info btn-lm";
+    finalizarCompraBoton.textContent = "Listoo!! ahora voy a Finalizar !!";
+    finalizarCompraCel.appendChild(finalizarCompraBoton);
+
+
+    finalizarCompraBoton.addEventListener("click", function () {
+        mostrarSweetAlert();
+    });
+
+    const filaBoton = document.createElement("tr");
+    const celdaVacia = document.createElement("td");
+    celdaVacia.colSpan = 1;
+    filaBoton.appendChild(celdaVacia);
+    filaBoton.appendChild(finalizarCompraCel);
+
+    tablaProductos.appendChild(filaBoton);
+
+
     function eliminarFilaYLocalStorage(index) {
-        // Eliminar la línea correspondiente en localStorage
         productosGuardados.splice(index, 1);
         localStorage.setItem("productosSeleccionados", JSON.stringify(productosGuardados));
-
-        // Actualizar la tabla después de eliminar
         mostrarTabla();
     }
 
@@ -105,6 +120,26 @@ function mostrarTabla() {
             return (parseFloat(precioLista) * parseInt(cantidad)).toFixed(2);
         }
         return '';
+    }
+    function mostrarSweetAlert() {
+        Swal.fire({
+            title: '¿Es tu primera compra aqui? 🧐🧐🧐',
+            input: 'select',
+            inputOptions: {
+                "si" : 'Sí',
+                "no" : 'No'
+            },
+            inputPlaceholder: 'Cuentanos!!',
+            showCancelButton: true,
+            confirmButtonText: 'Confirmar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire('¡Gracias por volver!', '¡Finalizaste tu compra!', 'success');
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire('Ok revisa y vuelve', '', 'error');
+            }
+        });
     }
 }
 
@@ -137,7 +172,13 @@ async function guardarProductoEnLocalStorage() {
 
 
             guardarLocal("productosSeleccionados", JSON.stringify(selectedProduct));
-            alert("Producto y cantidad guardados en localStorage.");
+            Swal.fire({
+                icon: 'success',
+                title: '¡Bien hecho!',
+                text: 'Agregaste un producto al carrito🎉❤️. ¡Vamos por otro!💪💪💪',
+                timer: 1800, // El tiempo en milisegundos antes de cerrar automáticamente
+                showConfirmButton: false // No mostrar el botón de confirmación
+            });
             mostrarTabla();
         } else {
             alert("No se encontró información para el producto seleccionado.");

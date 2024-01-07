@@ -8,30 +8,41 @@
 </head>
 <body>
 
-<div class="container mt-5">
-  <label for="selectExample">Selecciona un producto:</label>
-  <select class="form-control" id="IdprodStorage">
-    <option value="">Que producto te gusta ❤️😎🤩🎉...</option>
-  </select>
-</div>
-
-<div id="tablaProductos"></div>
-
-<div class="container mt-4">
-    <h2>Agregar Producto</h2>
-
-    <form id="formularioProducto">
-        <div class="form-group">
-            <label for="nombreProducto">Nombre del Producto:</label>
-            <input type="text" class="form-control" id="nombreProducto" required>
-        </div>
-        <div class="form-group">
-            <label for="precioProducto">Precio UYU:</label>
-            <input type="number" class="form-control" id="precioProducto" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Agregar Producto</button>
+  <div class="container mt-5">
+    <form id="miFormulario">
+      <div class="form-group">
+        <label for="productosDisp">Selecciona un producto:</label>
+        <select class="form-control" id="productosDisp">
+          <option value="">Que producto te gusta ❤️😎🤩🎉...</option>
+        </select>
+      </div>
+  
+      <div class="form-group">
+        <label for="cantidad">Cantidad:</label>
+        <input type="number" class="form-control" id="cantidad" placeholder="Ingrese la cantidad" min="1" value="1">
+      </div>
+  
+      <button type="button" id="guardarEnLocalStorage" class="btn btn-primary mt-2">Agregá este Producto! ❤️💪</button>
     </form>
-</div>
+  </div>
+
+
+ <table class="table mt-4">
+  <thead>
+    <tr>
+      <th>Producto</th>
+      <th>Descripción</th>
+      <th>Precio</th>
+      <th>Qty</th>
+      <th>Precio</th>
+      
+    
+    </tr>
+  </thead>
+  <tbody id="tablaProductos">
+  </tbody>
+</table>
+
 
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>

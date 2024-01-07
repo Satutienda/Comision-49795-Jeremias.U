@@ -24,7 +24,7 @@ function mostrarTabla() {
 
     let totalGeneral = 0;
 
-    productosGuardados.forEach(producto => {
+    productosGuardados.forEach((producto, index) => {
         const fila = document.createElement("tr");
 
         const productoObj = JSON.parse(producto);
@@ -32,9 +32,9 @@ function mostrarTabla() {
         // Celda para la imagen principal
         const imagenCel = document.createElement("td");
         const imagen = document.createElement("img");
-        imagen.src = productoObj.ImagPpal || ''; 
+        imagen.src = productoObj.ImagPpal || '';
         imagen.alt = 'Imagen del producto';
-        imagen.style.width = '50px'; 
+        imagen.style.width = '50px';
         imagen.style.height = '50px';
         imagen.style.borderRadius = "50%";
         imagen.style.objectFit = "cover"
@@ -61,6 +61,19 @@ function mostrarTabla() {
         totalCel.textContent = total || '';
         fila.appendChild(totalCel);
 
+        // Celda para el botón de eliminación
+        const eliminarCel = document.createElement("td");
+        const eliminarBoton = document.createElement("button");
+        eliminarBoton.className = "btn btn-danger btn-sm"; 
+        eliminarBoton.textContent = "Eliminar";
+        eliminarCel.appendChild(eliminarBoton);
+        fila.appendChild(eliminarCel);
+
+        eliminarBoton.addEventListener("click", function () {  
+            eliminarFilaYLocalStorage(index);
+        });
+
+        // Sumar al total general
         if (total) {
             totalGeneral += parseFloat(total);
         }
@@ -68,24 +81,33 @@ function mostrarTabla() {
         tablaProductos.appendChild(fila);
     });
 
+    // Agregar fila al final con el total general
+    const filaTotal = document.createElement("tr");
+    const totalGeneralCel = document.createElement("td");
+    totalGeneralCel.colSpan = 4;
+    totalGeneralCel.style.textAlign = 'right';
+    totalGeneralCel.textContent = 'Total General: ' + totalGeneral.toFixed(2);
+    filaTotal.appendChild(totalGeneralCel);
+
+    tablaProductos.appendChild(filaTotal);
+
+    function eliminarFilaYLocalStorage(index) {
+        // Eliminar la línea correspondiente en localStorage
+        productosGuardados.splice(index, 1);
+        localStorage.setItem("productosSeleccionados", JSON.stringify(productosGuardados));
+
+        // Actualizar la tabla después de eliminar
+        mostrarTabla();
+    }
+
     function calcularTotal(precioLista, cantidad) {
         if (precioLista && cantidad) {
             return (parseFloat(precioLista) * parseInt(cantidad)).toFixed(2);
         }
         return '';
     }
-
-    // agrego al fila con Total 
-    const filaTotal = document.createElement("tr");
-    const totalGeneralCel = document.createElement("td");
-    totalGeneralCel.colSpan = 4; 
-    totalGeneralCel.style.textAlign = 'right';
-    totalGeneralCel.textContent = 'Total General: ' + totalGeneral.toFixed(2);
-    filaTotal.appendChild(totalGeneralCel);
-
-    tablaProductos.appendChild(filaTotal);
-    
 }
+
 
 
 document.getElementById("guardarEnLocalStorage").addEventListener("click", async function () {
@@ -94,7 +116,7 @@ document.getElementById("guardarEnLocalStorage").addEventListener("click", async
 
 
 document.getElementById("miFormulario").addEventListener("submit", function (event) {
-    event.preventDefault(); 
+    event.preventDefault();
     guardarProductoEnLocalStorage();
 });
 
@@ -110,10 +132,10 @@ async function guardarProductoEnLocalStorage() {
         const selectedProduct = productos.find(producto => producto.nombreSatu === selectedValue);
 
         if (selectedProduct) {
-            
+
             selectedProduct.cantidad = cantidad;
 
-            
+
             guardarLocal("productosSeleccionados", JSON.stringify(selectedProduct));
             alert("Producto y cantidad guardados en localStorage.");
             mostrarTabla();

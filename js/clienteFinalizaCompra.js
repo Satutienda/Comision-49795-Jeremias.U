@@ -107,11 +107,6 @@ function mostrarTabla() {
         tablaProductos.appendChild(fila);
     });
 
-
-
-
-
-
     // Resumen con total general 
     const filaTotal = document.createElement("tr");
     const totalGeneralCel = document.createElement("td");
@@ -125,9 +120,11 @@ function mostrarTabla() {
     const finalizarCompraCel = document.createElement("td");
     const finalizarCompraBoton = document.createElement("button");
     finalizarCompraBoton.className = "btn btn-info btn-lm";
-    finalizarCompraBoton.textContent = "Listoo!! ahora voy a Finalizar !!";
-    finalizarCompraCel.appendChild(finalizarCompraBoton);
+    finalizarCompraBoton.textContent = "Listoo, hagamoslo!!";
 
+    if (totalGeneral>0) {
+        finalizarCompraCel.appendChild(finalizarCompraBoton);
+    }
 
     finalizarCompraBoton.addEventListener("click", function () {
         mostrarSweetAlert();

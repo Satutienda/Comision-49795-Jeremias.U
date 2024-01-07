@@ -1,7 +1,7 @@
 
 
 async function ListaProductosExiste() {
-    const response = await fetch("../productos.json");
+    const response = await fetch("https://satutienda.github.io/Comision-49795-Jeremias.U/productos.json");
     if (response.ok) {
         return await response.json();
     } else {
